@@ -5,10 +5,10 @@
 Helps mimic a *nix environment on Windows with as little work as possible.
 
 The script:
-* Installs nano and makes it accessible from msysgit
+* Installs nano and makes it accessible from msysGit
 * Installs sqlite3 and makes it accessible from msysGit
 * Creates ~/nano.rc with links to syntax highlighting configs
-* Provides standard nosetests behavior for msysgit
+* Provides standard nosetests behavior for msysGit
 * Add R's bin directory to the path (if we can find it)
 
 To use:
@@ -16,7 +16,7 @@ To use:
 1. Install Python, IPython, and Nose.  An easy way to do this is with
    the Anaconda CE Python distribution
    http://continuum.io/anacondace.html
-2. Install msysgit
+2. Install msysGit
    http://code.google.com/p/msysgit/downloads/list
 3. Run swc_windows_installer.py
    You should be able to simply double click the file in Windows
@@ -162,7 +162,7 @@ def install_sqlite(install_directory):
 
 
 def create_nosetests_entry_point(python_scripts_directory):
-    """Creates a terminal-based nosetests entry point for msysgit"""
+    """Creates a terminal-based nosetests entry point for msysGit"""
     contents = '\n'.join([
             '#!/usr/bin/env/ python',
             'import sys',
