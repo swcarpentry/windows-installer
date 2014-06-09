@@ -17,7 +17,7 @@ To use:
    the Anaconda CE Python distribution
    http://continuum.io/anacondace.html
 2. Install msysGit
-   http://code.google.com/p/msysgit/downloads/list
+   https://github.com/msysgit/msysgit/releases
 3. Run swc_windows_installer.py
    You should be able to simply double click the file in Windows
 
