@@ -9,6 +9,7 @@ The script:
 * Installs sqlite3 and makes it accessible from msysGit
 * Creates ~/nano.rc with links to syntax highlighting configs
 * Provides standard nosetests behavior for msysgit
+* Add R's bin directory to the path (if we can find it)
 
 To use:
 
@@ -22,6 +23,7 @@ To use:
 
 """
 
+import glob
 import hashlib
 try:  # Python 3
     from io import BytesIO as _BytesIO
@@ -175,6 +177,22 @@ def create_nosetests_entry_point(python_scripts_directory):
         f.write(contents)
 
 
+def get_r_bin_directory():
+    """Locate the R bin directory (if R is installed
+    """
+    pf = _os.environ.get('ProgramFiles', r'c:\ProgramFiles')
+    bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
+    version_re = re.compile('^R-(\d+)[.](\d+)[.](\d+)$')
+    paths = {}
+    for path in glob.glob(bin_glob):
+        version_dir = os.path.basename(os.path.dirname(path))
+        version_match = version_re.match(version_dir)
+        if version_match:
+            paths[version_match.groups()] = path
+    version = sorted(paths.keys())[-1]
+    return paths[version]
+
+
 def update_bash_profile(extra_paths=()):
     """Create or append to a .bash_profile for Software Carpentry
 
@@ -216,7 +234,11 @@ def main():
     install_nano(install_directory=nano_dir)
     install_nanorc(install_directory=nanorc_dir)
     install_sqlite(install_directory=sqlite_dir)
-    update_bash_profile(extra_paths=(nano_dir, sqlite_dir, bin_dir))
+    paths = [nano_dir, sqlite_dir, bin_dir]
+    r_dir = get_r_bin_directory()
+    if r_dir:
+        paths.append(r_dir)
+    update_bash_profile(extra_paths=paths)
 
 
 if __name__ == '__main__':
