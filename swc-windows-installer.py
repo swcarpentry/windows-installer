@@ -29,6 +29,7 @@ try:  # Python 3
     from io import BytesIO as _BytesIO
 except ImportError:  # Python 2
     from StringIO import StringIO as _BytesIO
+import logging
 import os
 import re
 import sys
@@ -38,6 +39,11 @@ try:  # Python 3
 except ImportError:  # Python 2
     from urllib2 import urlopen as _urlopen
 import zipfile
+
+
+LOG = logging.getLogger('swc-windows-installer')
+LOG.addHandler(logging.StreamHandler())
+LOG.setLevel(logging.ERROR)
 
 
 if sys.version_info >= (3, 0):  # Python 3
@@ -55,13 +61,15 @@ else:
 
 def download(url, sha1):
     """Download a file and verify it's hash"""
+    LOG.debug('download {}'.format(url))
     r = _urlopen(url)
     byte_content = r.read()
     download_sha1 = hashlib.sha1(byte_content).hexdigest()
     if download_sha1 != sha1:
         raise ValueError(
-            'downloaded {!r} has the wrong SHA1 hash: {} != {}'.format(
+            'downloaded {!r} has the wrong SHA-1 hash: {} != {}'.format(
                 url, download_sha1, sha1))
+    LOG.debug('SHA-1 for {} matches the expected {}'.format(url, sha1))
     return byte_content
 
 
@@ -106,6 +114,7 @@ def tar_install(url, sha1, install_directory, compression='*',
         filename = os.path.basename(url)
         mode = 'r:{}'.format(compression)
         tar_file = tarfile.open(filename, mode, tar_io)
+        LOG.info('installing {} into {}'.format(url, install_directory))
         os.makedirs(install_directory)
         members = [
             transform(tarinfo=tarinfo, strip_components=strip_components)
@@ -113,6 +122,8 @@ def tar_install(url, sha1, install_directory, compression='*',
         tar_file.extractall(
             path=install_directory,
             members=[m for m in members if m is not None])
+    else:
+        LOG.info('existing installation at {}'.format(install_directory))
 
 
 def zip_install(url, sha1, install_directory):
@@ -121,8 +132,11 @@ def zip_install(url, sha1, install_directory):
         zip_bytes = download(url=url, sha1=sha1)
         zip_io = _BytesIO(zip_bytes)
         zip_file = zipfile.ZipFile(zip_io)
+        LOG.info('installing {} into {}'.format(url, install_directory))
         os.makedirs(install_directory)
         zip_file.extractall(install_directory)
+    else:
+        LOG.info('existing installation at {}'.format(install_directory))
 
 
 def install_nano(install_directory):
@@ -144,6 +158,7 @@ def install_nanorc(install_directory):
     nanorc = os.path.join(home, 'nano.rc')
     if not os.path.isfile(nanorc):
         syntax_dir = os.path.join(install_directory, 'doc', 'syntax')
+        LOG.info('include nanorc from {} in {}'.format(syntax_dir, nanorc))
         with open3(nanorc, 'w', newline='\n') as f:
             for filename in os.listdir(syntax_dir):
                 if filename.endswith('.nanorc'):
@@ -173,14 +188,16 @@ def create_nosetests_entry_point(python_scripts_directory):
             ])
     if not os.path.isdir(python_scripts_directory):
         os.makedirs(python_scripts_directory)
-    with open(os.path.join(python_scripts_directory, 'nosetests'), 'w') as f:
+    path = os.path.join(python_scripts_directory, 'nosetests')
+    LOG.info('create nosetests entrypoint {}'.format(path))
+    with open(path, 'w') as f:
         f.write(contents)
 
 
 def get_r_bin_directory():
     """Locate the R bin directory (if R is installed
     """
-    pf = _os.environ.get('ProgramFiles', r'c:\ProgramFiles')
+    pf = os.environ.get('ProgramFiles', r'c:\ProgramFiles')
     bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
     version_re = re.compile('^R-(\d+)[.](\d+)[.](\d+)$')
     paths = {}
@@ -189,7 +206,14 @@ def get_r_bin_directory():
         version_match = version_re.match(version_dir)
         if version_match:
             paths[version_match.groups()] = path
+    if not paths:
+        LOG.info('no R installation found under {}'.format(pf))
+        return
+    LOG.debug('detected R installs:\n* {}'.format('\n* '.join([
+        v for k,v in sorted(paths.items())])))
     version = sorted(paths.keys())[-1]
+    LOG.info('using R v{} bin directory at {}'.format(
+        '.'.join(version), paths[version]))
     return paths[version]
 
 
@@ -210,6 +234,8 @@ def update_bash_profile(extra_paths=()):
         '',
         ]
     config_path = os.path.join(os.path.expanduser('~'), '.bash_profile')
+    LOG.info('update bash profile at {}'.format(config_path))
+    LOG.debug('extra paths:\n* {}'.format('\n* '.join(extra_paths)))
     with open(config_path, 'a') as f:
         f.write('\n'.join(lines))
 
@@ -242,5 +268,21 @@ def main():
 
 
 if __name__ == '__main__':
-    print("Preparing your Software Carpentry awesomeness!")
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument(
+        '-v', '--verbose', choices=['info', 'debug'],
+        help='Verbosity')
+
+    args = parser.parse_args()
+
+    if args.verbose:
+        level = getattr(logging, args.verbose.upper())
+        LOG.setLevel(level)
+
+    LOG.info('Preparing your Software Carpentry awesomeness!')
     main()
+    LOG.info('Installation complete.')
