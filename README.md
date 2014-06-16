@@ -10,21 +10,23 @@ The script:
 * Provides standard [nosetests][] behavior for msysGit
 * Add [R][]'s bin directory to the path (if we can find it)
 
-To use:
+Building
+========
 
-1. Install [Python][], [IPython][], and [Nose][nose].  An easy way to
-   do this is with the [Anaconda CE][Anaconda-CE] Python distribution.
-2. [Install msysGit][msysgit-install]
-3. Run `swc-windows-installer.py`.  You should be able to simply
-   double click the file in Windows.
+TODO
+
+For folks who don't want to build their own version, the most recent
+version is also [available here][compiled].
+
+Using
+=====
+
+Just have your students download and double-click the compiled
+installer.
 
 [msysGit]: http://msysgit.github.io/
-[msysgit-install]: https://github.com/msysgit/msysgit/releases
 [nano]: http://www.nano-editor.org/
 [SQLite]: http://www.sqlite.org/
-[Python]: https://www.python.org/
-[IPython]: http://ipython.org/
-[Nose]: https://nose.readthedocs.org/en/latest/
 [nosetests]: https://nose.readthedocs.org/en/latest/usage.html
 [R]: http://www.r-project.org/
-[Anaconda-CE]: http://continuum.io/anacondace.html
+[compiled]: http://files.software-carpentry.org/SWCarpentryInstaller.exe
