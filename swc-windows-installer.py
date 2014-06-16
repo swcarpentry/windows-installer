@@ -7,7 +7,7 @@ Helps mimic a *nix environment on Windows with as little work as possible.
 The script:
 * Installs nano and makes it accessible from msysGit
 * Installs SQLite and makes it accessible from msysGit
-* Creates ~/nano.rc with links to syntax highlighting configs
+* Creates a ~/nano.rc with links to syntax highlighting configs
 * Provides standard nosetests behavior for msysGit
 * Add R's bin directory to the path (if we can find it)
 
