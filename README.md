@@ -8,7 +8,7 @@ The script:
 * Installs [SQLite][] and makes it accessible from msysGit
 * Creates a `~/nano.rc` with links to syntax highlighting configs
 * Provides standard [nosetests][] behavior for msysGit
-* Add [R][]'s bin directory to the path (if we can find it)
+* Adds [R][]'s bin directory to the path (if we can find it)
 
 To use:
 
