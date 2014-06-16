@@ -6,8 +6,8 @@ Helps mimic a *nix environment on Windows with as little work as possible.
 
 The script:
 * Installs nano and makes it accessible from msysGit
-* Installs sqlite3 and makes it accessible from msysGit
-* Creates ~/nano.rc with links to syntax highlighting configs
+* Installs SQLite and makes it accessible from msysGit
+* Creates a ~/nano.rc with links to syntax highlighting configs
 * Provides standard nosetests behavior for msysGit
 * Add R's bin directory to the path (if we can find it)
 
@@ -18,7 +18,7 @@ To use:
    http://continuum.io/anacondace.html
 2. Install msysGit
    https://github.com/msysgit/msysgit/releases
-3. Run swc_windows_installer.py
+3. Run swc-windows-installer.py.
    You should be able to simply double click the file in Windows
 
 """
@@ -169,7 +169,7 @@ def install_nanorc(install_directory):
 
 
 def install_sqlite(install_directory):
-    """Download and install the sqlite3 shell"""
+    """Download and install the SQLite shell"""
     zip_install(
         url='https://sqlite.org/2014/sqlite-shell-win32-x86-3080403.zip',
         sha1='1a8ab0ca9f4c51afeffeb49bd301e1d7f64741bb',
