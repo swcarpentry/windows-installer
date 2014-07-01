@@ -13,7 +13,16 @@ The script:
 Building
 ========
 
-TODO
+Building the Windows installer requires a Windows machine with Python,
+[py2exe][] and [Inno Setup][inno]. `py2exe` can be installed using `pip` and
+Inno Setup can be installed using the self-installing package from
+[the download page][inno-download].
+
+```
+python setup.py install
+python setup.py py2exe
+ISCC.exe swc-installer.iss
+```
 
 For folks who don't want to build their own version, the most recent
 version is also [available here][compiled].
@@ -29,4 +38,7 @@ installer.
 [SQLite]: http://www.sqlite.org/
 [nosetests]: https://nose.readthedocs.org/en/latest/usage.html
 [R]: http://www.r-project.org/
+[py2exe]: http://py2exe.org/
+[inno]: http://www.jrsoftware.org/isinfo.php
+[inno-download]: http://www.jrsoftware.org/isdl.php
 [compiled]: http://files.software-carpentry.org/SWCarpentryInstaller.exe
