@@ -43,7 +43,7 @@ import zipfile
 
 LOG = logging.getLogger('swc-windows-installer')
 LOG.addHandler(logging.StreamHandler())
-LOG.setLevel(logging.ERROR)
+LOG.setLevel(logging.INFO)
 
 
 if sys.version_info >= (3, 0):  # Python 3
@@ -274,8 +274,10 @@ if __name__ == '__main__':
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
-        '-v', '--verbose', choices=['info', 'debug'],
-        help='Verbosity')
+        '-v', '--verbose',
+        choices=['critical', 'error', 'warning', 'info', 'debug'],
+        help='Verbosity (defaults to {!r})'.format(
+            logging.getLevelName(LOG.level).lower()))
 
     args = parser.parse_args()
 
