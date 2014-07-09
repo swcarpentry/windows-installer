@@ -197,7 +197,7 @@ def create_nosetests_entry_point(python_scripts_directory):
 def get_r_bin_directory():
     """Locate the R bin directory (if R is installed
     """
-    pf = os.environ.get('ProgramFiles', r'c:\ProgramFiles')
+    pf = os.environ.get('ProgramFiles', r'c:\Program Files')
     bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
     version_re = re.compile('^R-(\d+)[.](\d+)[.](\d+)$')
     paths = {}
