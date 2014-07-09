@@ -197,15 +197,19 @@ def create_nosetests_entry_point(python_scripts_directory):
 def get_r_bin_directory():
     """Locate the R bin directory (if R is installed
     """
-    pf = os.environ.get('ProgramFiles', r'c:\Program Files')
-    bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
     version_re = re.compile('^R-(\d+)[.](\d+)[.](\d+)$')
     paths = {}
-    for path in glob.glob(bin_glob):
-        version_dir = os.path.basename(os.path.dirname(path))
-        version_match = version_re.match(version_dir)
-        if version_match:
-            paths[version_match.groups()] = path
+    for pf in [
+            os.environ.get('ProgramW6432', r'c:\Program Files'),
+            os.environ.get('ProgramFiles', r'c:\Program Files'),
+            os.environ.get('ProgramFiles(x86)', r'c:\Program Files(x86)'),
+            ]:
+        bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
+        for path in glob.glob(bin_glob):
+            version_dir = os.path.basename(os.path.dirname(path))
+            version_match = version_re.match(version_dir)
+            if version_match and version_match.groups() not in paths:
+                paths[version_match.groups()] = path
     if not paths:
         LOG.info('no R installation found under {}'.format(pf))
         return
