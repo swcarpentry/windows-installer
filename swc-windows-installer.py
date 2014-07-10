@@ -41,6 +41,8 @@ except ImportError:  # Python 2
 import zipfile
 
 
+__version__ = '0.1'
+
 LOG = logging.getLogger('swc-windows-installer')
 LOG.addHandler(logging.StreamHandler())
 LOG.setLevel(logging.INFO)
@@ -282,6 +284,9 @@ if __name__ == '__main__':
         choices=['critical', 'error', 'warning', 'info', 'debug'],
         help='Verbosity (defaults to {!r})'.format(
             logging.getLevelName(LOG.level).lower()))
+    parser.add_argument(
+        '--version', action='version',
+        version='%(prog)s {}'.format(__version__))
 
     args = parser.parse_args()
 
@@ -290,5 +295,6 @@ if __name__ == '__main__':
         LOG.setLevel(level)
 
     LOG.info('Preparing your Software Carpentry awesomeness!')
+    LOG.info('installer version {}'.format(__version__))
     main()
     LOG.info('Installation complete.')
