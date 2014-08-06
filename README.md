@@ -41,4 +41,4 @@ installer.
 [py2exe]: http://py2exe.org/
 [inno]: http://www.jrsoftware.org/isinfo.php
 [inno-download]: http://www.jrsoftware.org/isdl.php
-[compiled]: http://files.software-carpentry.org/SWCarpentryInstaller.exe
+[compiled]: https://github.com/swcarpentry/windows-installer/releases/latest
