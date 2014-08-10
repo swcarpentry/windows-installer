@@ -18,7 +18,9 @@ To use:
    http://continuum.io/anacondace.html
 2. Install msysGit
    https://github.com/msysgit/msysgit/releases
-3. Run swc-windows-installer.py.
+3. Install R (if your workshop uses R)
+   http://cran.r-project.org/bin/windows/base/rw-FAQ.html#Installation-and-Usage
+4. Run swc-windows-installer.py.
    You should be able to simply double click the file in Windows
 
 """
