@@ -13,7 +13,7 @@ The script:
 To use:
 
 1. Install [Python][], [IPython][], and [Nose][nose].  An easy way to
-   do this is with the [Anaconda CE][Anaconda-CE] Python distribution.
+   do this is with the [Anaconda][] Python distribution.
 2. [Install msysGit][msysgit-install]
 3. [Install R][R-install] (if your workshop uses R).
 4. Run `swc-windows-installer.py`.  You should be able to simply
@@ -29,4 +29,4 @@ To use:
 [nosetests]: https://nose.readthedocs.org/en/latest/usage.html
 [R]: http://www.r-project.org/
 [R-install]: http://cran.r-project.org/bin/windows/base/rw-FAQ.html#Installation-and-Usage
-[Anaconda-CE]: http://continuum.io/anacondace.html
+[Anaconda]: http://continuum.io/downloads

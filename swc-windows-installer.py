@@ -14,8 +14,8 @@ The script:
 To use:
 
 1. Install Python, IPython, and Nose.  An easy way to do this is with
-   the Anaconda CE Python distribution
-   http://continuum.io/anacondace.html
+   the Anaconda Python distribution
+   http://continuum.io/downloads
 2. Install msysGit
    https://github.com/msysgit/msysgit/releases
 3. Install R (if your workshop uses R)
