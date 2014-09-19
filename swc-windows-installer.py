@@ -5,6 +5,7 @@
 Helps mimic a *nix environment on Windows with as little work as possible.
 
 The script:
+* Installs GNU Make and makes it accessible from msysGit
 * Installs nano and makes it accessible from msysGit
 * Installs SQLite and makes it accessible from msysGit
 * Creates a ~/nano.rc with links to syntax highlighting configs
@@ -143,6 +144,18 @@ def zip_install(url, sha1, install_directory):
         LOG.info('existing installation at {}'.format(install_directory))
 
 
+def install_msysgit_binary(name, sha1, install_directory,
+                           tag='Git-1.9.4-preview20140815'):
+    """Download and install a binary from msysGit's bin directory"""
+    bytes = download(
+        url='https://github.com/msysgit/msysgit/raw/{}/bin/{}'.format(
+            tag, name),
+        sha1=sha1)
+    LOG.info('installing {} into {}'.format(name, install_directory))
+    with open(os.path.join(install_directory, name), 'wb') as f:
+        f.write(bytes)
+
+
 def install_nano(install_directory):
     """Download and install the nano text editor"""
     zip_install(
@@ -265,6 +278,9 @@ def main():
     nanorc_dir = os.path.join(swc_dir, 'share', 'nanorc')
     sqlite_dir = os.path.join(swc_dir, 'lib', 'sqlite')
     create_nosetests_entry_point(python_scripts_directory=bin_dir)
+    install_msysgit_binary(
+        name='make.exe', sha1='ad11047985c33ff57074f8e09d347fe122e047a4',
+        install_directory=bin_dir)
     install_nano(install_directory=nano_dir)
     install_nanorc(install_directory=nanorc_dir)
     install_sqlite(install_directory=sqlite_dir)
