@@ -65,7 +65,7 @@ else:
 
 
 def download(url, sha1):
-    """Download a file and verify it's hash"""
+    """Download a file and verify its hash"""
     LOG.debug('download {}'.format(url))
     r = _urlopen(url)
     byte_content = r.read()
