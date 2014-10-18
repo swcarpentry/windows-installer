@@ -31,16 +31,18 @@ Using
 =====
 
 Just have your students download and double-click the compiled
-installer.  If you're using [R][], you'll have to install R before
-running this installer (because this installer searches likely paths
-to find R's `bin` directory).  Otherwise, you can run it whenever you
-like (e.g. either before or after installing [Python][]).
+installer.  If you're using [R][], you'll have to [install
+R][R-install] before running this installer (because this installer
+searches likely paths to find R's `bin` directory).  Otherwise, you
+can run it whenever you like (e.g. either before or after installing
+[Python][]).
 
 [msysGit]: http://msysgit.github.io/
 [nano]: http://www.nano-editor.org/
 [SQLite]: http://www.sqlite.org/
 [nosetests]: https://nose.readthedocs.org/en/latest/usage.html
 [R]: http://www.r-project.org/
+[R-install]: http://cran.r-project.org/bin/windows/base/rw-FAQ.html#Installation-and-Usage
 [Python]: https://www.python.org/
 [py2exe]: http://py2exe.org/
 [inno]: http://www.jrsoftware.org/isinfo.php
