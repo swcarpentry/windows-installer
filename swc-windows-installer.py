@@ -44,7 +44,7 @@ except ImportError:  # Python 2
 import zipfile
 
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 LOG = logging.getLogger('swc-windows-installer')
 LOG.addHandler(logging.StreamHandler())
