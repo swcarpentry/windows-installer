@@ -188,8 +188,8 @@ def install_nanorc(install_directory):
 def install_sqlite(install_directory):
     """Download and install the SQLite shell"""
     zip_install(
-        url='https://sqlite.org/2014/sqlite-shell-win32-x86-3080403.zip',
-        sha1='1a8ab0ca9f4c51afeffeb49bd301e1d7f64741bb',
+        url='https://sqlite.org/2015/sqlite-shell-win32-x86-3080803.zip',
+        sha1='a57f43b96827c549eb647a126779794e88022e46',
         install_directory=install_directory)
 
 
