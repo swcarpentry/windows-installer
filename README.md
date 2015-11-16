@@ -4,7 +4,8 @@ Helps mimic a *nix environment on Windows with as little work as possible.
 
 The script:
 
-* Installs [nano][] and makes it accessible from [msysGit][]
+* Installs [GNU Make][make] and makes it accessible from [msysGit][]
+* Installs [nano][] and makes it accessible from msysGit
 * Installs [SQLite][] and makes it accessible from msysGit
 * Creates a `~/nano.rc` with links to syntax highlighting configs
 * Provides standard [nosetests][] behavior for msysGit
@@ -19,6 +20,7 @@ To use:
 4. Run `swc-windows-installer.py`.  You should be able to simply
    double click the file in Windows.
 
+[make]: https://www.gnu.org/software/make/
 [msysGit]: http://msysgit.github.io/
 [msysgit-install]: https://github.com/msysgit/msysgit/releases
 [nano]: http://www.nano-editor.org/
