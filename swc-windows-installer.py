@@ -52,8 +52,10 @@ LOG.setLevel(logging.INFO)
 
 
 if sys.version_info >= (3, 0):  # Python 3
+    _MakeDirsError = OSError
     open3 = open
 else:
+    _MakeDirsError = os.error
     def open3(file, mode='r', newline=None):
         if newline:
             if newline != '\n':
@@ -131,29 +133,36 @@ def tar_install(url, sha1, install_directory, compression='*',
         LOG.info('existing installation at {}'.format(install_directory))
 
 
-def zip_install(url, sha1, install_directory):
+def zip_install(url, sha1, install_directory, path=None):
     """Download and install a zipped bundle"""
-    if not os.path.isdir(install_directory):
+    if path is None:
+        path = install_directory
+    if not os.path.exists(path):
         zip_bytes = download(url=url, sha1=sha1)
         zip_io = _BytesIO(zip_bytes)
         zip_file = zipfile.ZipFile(zip_io)
         LOG.info('installing {} into {}'.format(url, install_directory))
-        os.makedirs(install_directory)
+        try:
+            os.makedirs(install_directory)
+        except _MakeDirsError:
+            pass
         zip_file.extractall(install_directory)
     else:
         LOG.info('existing installation at {}'.format(install_directory))
 
 
-def install_msysgit_binary(name, sha1, install_directory,
-                           tag='Git-1.9.4-preview20140815'):
-    """Download and install a binary from msysGit's bin directory"""
-    bytes = download(
-        url='https://github.com/msysgit/msysgit/raw/{}/bin/{}'.format(
-            tag, name),
-        sha1=sha1)
-    LOG.info('installing {} into {}'.format(name, install_directory))
-    with open(os.path.join(install_directory, name), 'wb') as f:
-        f.write(bytes)
+def install_make(install_directory):
+    """Download and install GNU Make"""
+    zip_install(
+        url='http://downloads.sourceforge.net/project/gnuwin32/make/3.81/make-3.81-bin.zip',
+        sha1='7c1e23a93e6cb78975f36efd22d598241b1f0e8b',
+        install_directory=install_directory,
+        path=os.path.join(install_directory, 'bin', 'make.exe'))
+    zip_install(
+        url='http://downloads.sourceforge.net/project/gnuwin32/make/3.81/make-3.81-dep.zip',
+        sha1='ee90e45c1bacc24a0c3852a95fc6dcfbcabe802b',
+        install_directory=install_directory,
+        path=os.path.join(install_directory, 'bin', 'libiconv2.dll'))
 
 
 def install_nano(install_directory):
@@ -274,17 +283,17 @@ def make_posix_path(windows_path):
 def main():
     swc_dir = os.path.join(os.path.expanduser('~'), '.swc')
     bin_dir = os.path.join(swc_dir, 'bin')
+    make_dir = os.path.join(swc_dir, 'lib', 'make')
+    make_bin = os.path.join(make_dir, 'bin')
     nano_dir = os.path.join(swc_dir, 'lib', 'nano')
     nanorc_dir = os.path.join(swc_dir, 'share', 'nanorc')
     sqlite_dir = os.path.join(swc_dir, 'lib', 'sqlite')
     create_nosetests_entry_point(python_scripts_directory=bin_dir)
-    install_msysgit_binary(
-        name='make.exe', sha1='ad11047985c33ff57074f8e09d347fe122e047a4',
-        install_directory=bin_dir)
+    install_make(install_directory=make_dir)
     install_nano(install_directory=nano_dir)
     install_nanorc(install_directory=nanorc_dir)
     install_sqlite(install_directory=sqlite_dir)
-    paths = [nano_dir, sqlite_dir, bin_dir]
+    paths = [make_bin, nano_dir, sqlite_dir, bin_dir]
     r_dir = get_r_bin_directory()
     if r_dir:
         paths.append(r_dir)
