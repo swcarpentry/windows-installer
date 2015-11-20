@@ -4,7 +4,8 @@ Helps mimic a *nix environment on Windows with as little work as possible.
 
 The script:
 
-* Installs [nano][] and makes it accessible from [msysGit][]
+* Installs [GNU Make][make] and makes it accessible from [msysGit][]
+* Installs [nano][] and makes it accessible from msysGit
 * Installs [SQLite][] and makes it accessible from msysGit
 * Creates a `~/nano.rc` with links to syntax highlighting configs
 * Provides standard [nosetests][] behavior for msysGit
@@ -37,6 +38,7 @@ searches likely paths to find R's `bin` directory).  Otherwise, you
 can run it whenever you like (e.g. either before or after installing
 [Python][]).
 
+[make]: https://www.gnu.org/software/make/
 [msysGit]: http://msysgit.github.io/
 [nano]: http://www.nano-editor.org/
 [SQLite]: http://www.sqlite.org/
