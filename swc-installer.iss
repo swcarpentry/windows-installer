@@ -32,7 +32,7 @@ Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createal
 Name: "{group}\Software Carpentry Windows Installer"; Filename: "{app}\swc-windows-installer.exe"
 
 [Run]
-// postinstall flag is needed for installation script to run properly
+; postinstall flag is needed for installation script to run properly
 Filename: "{app}\swc-windows-installer.exe"; Description: "Finish Installation"; Flags: nowait postinstall skipifsilent
 
 [Code]
