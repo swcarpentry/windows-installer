@@ -7,8 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{2E6818B6-DA37-4D45-8FED-88A6EED6CD08}
 AppName=Software Carpentry Windows Installer
-AppVersion=0.2
-;AppVerName=Software Carpentry Windows Installer 0.2
+AppVersion=0.3
 AppPublisher=Software Carpentry
 AppPublisherURL=http://software-carpentry.org
 AppSupportURL=http://software-carpentry.org
@@ -33,7 +32,7 @@ Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createal
 Name: "{group}\Software Carpentry Windows Installer"; Filename: "{app}\swc-windows-installer.exe"
 
 [Run]
-// postinstall flag is needed for installation script to run properly
+; postinstall flag is needed for installation script to run properly
 Filename: "{app}\swc-windows-installer.exe"; Description: "Finish Installation"; Flags: nowait postinstall skipifsilent
 
 [Code]
