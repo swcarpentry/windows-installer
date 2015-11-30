@@ -14,7 +14,8 @@ The script:
 Building
 ========
 
-Building the Windows installer requires a Windows machine with [Python][],
+Building the Windows installer requires a Windows machine with [Python][]
+(Python 2 as it is required by py2exe),
 [py2exe][] and [Inno Setup][inno]. `py2exe` can be installed using `pip` and
 Inno Setup can be installed using the self-installing package from
 [the download page][inno-download].
