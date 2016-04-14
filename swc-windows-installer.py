@@ -230,7 +230,7 @@ def get_r_bin_directory():
             os.environ.get('ProgramFiles', r'c:\Program Files'),
             os.environ.get('ProgramFiles(x86)', r'c:\Program Files(x86)'),
             ]:
-        bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*', 'bin')
+        bin_glob = os.path.join(pf, 'R', 'R-[0-9]*.[0-9]*.[0-9]*[a-z]*', 'bin')
         for path in glob.glob(bin_glob):
             version_dir = os.path.basename(os.path.dirname(path))
             version_match = version_re.match(version_dir)
