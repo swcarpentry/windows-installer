@@ -205,7 +205,7 @@ def install_sqlite(install_directory):
 def create_nosetests_entry_point(python_scripts_directory):
     """Creates a terminal-based nosetests entry point for msysGit"""
     contents = '\n'.join([
-            '#!/usr/bin/env/ python',
+            '#!/usr/bin/env python',
             'import sys',
             'import nose',
             "if __name__ == '__main__':",
