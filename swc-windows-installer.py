@@ -66,17 +66,23 @@ else:
         return f
 
 
-def download(url, sha1):
+def download(url, sha1=None, sha512=None):
     """Download a file and verify its hash"""
     LOG.debug('download {}'.format(url))
     r = _urlopen(url)
     byte_content = r.read()
-    download_sha1 = hashlib.sha1(byte_content).hexdigest()
-    if download_sha1 != sha1:
-        raise ValueError(
-            'downloaded {!r} has the wrong SHA-1 hash: {} != {}'.format(
-                url, download_sha1, sha1))
-    LOG.debug('SHA-1 for {} matches the expected {}'.format(url, sha1))
+    for name, expected, hasher in [
+            ('SHA-1', sha1, hashlib.sha1),
+            ('SHA-512', sha512, hashlib.sha512),
+            ]:
+        if expected:
+            download_hash = hasher(byte_content).hexdigest()
+            if download_hash != expected:
+                raise ValueError(
+                    'downloaded {!r} has the wrong {} hash: {} != {}'.format(
+                        url, name, download_hash, expected))
+        LOG.debug('{} for {} matches the expected {}'.format(
+            name, url, expected))
     return byte_content
 
 
@@ -112,11 +118,11 @@ def transform(tarinfo, strip_components=0):
     return tarinfo
 
 
-def tar_install(url, sha1, install_directory, compression='*',
-                strip_components=0):
+def tar_install(url, install_directory, compression='*', strip_components=0,
+                **kwargs):
     """Download and install a tar bundle"""
     if not os.path.isdir(install_directory):
-        tar_bytes = download(url=url, sha1=sha1)
+        tar_bytes = download(url=url, **kwargs)
         tar_io = _BytesIO(tar_bytes)
         filename = os.path.basename(url)
         mode = 'r:{}'.format(compression)
@@ -133,12 +139,12 @@ def tar_install(url, sha1, install_directory, compression='*',
         LOG.info('existing installation at {}'.format(install_directory))
 
 
-def zip_install(url, sha1, install_directory, path=None):
+def zip_install(url, install_directory, path=None, **kwargs):
     """Download and install a zipped bundle"""
     if path is None:
         path = install_directory
     if not os.path.exists(path):
-        zip_bytes = download(url=url, sha1=sha1)
+        zip_bytes = download(url=url, **kwargs)
         zip_io = _BytesIO(zip_bytes)
         zip_file = zipfile.ZipFile(zip_io)
         LOG.info('installing {} into {}'.format(url, install_directory))
@@ -156,11 +162,13 @@ def install_make(install_directory):
     zip_install(
         url='http://downloads.sourceforge.net/project/gnuwin32/make/3.81/make-3.81-bin.zip',
         sha1='7c1e23a93e6cb78975f36efd22d598241b1f0e8b',
+        sha512='7b67c9a32c727e3929900272ef05f5c52035b5731ab3d46abe9e641c2f28c049d094e497e5097f431ee680ace342542854d541a09ebece7730af25e69d033447',
         install_directory=install_directory,
         path=os.path.join(install_directory, 'bin', 'make.exe'))
     zip_install(
         url='http://downloads.sourceforge.net/project/gnuwin32/make/3.81/make-3.81-dep.zip',
         sha1='ee90e45c1bacc24a0c3852a95fc6dcfbcabe802b',
+        sha512='bd4467c0d708c1deec3604754cea9428e4aa5f6e7d9ec24f62bc4d68308f12dec4661b900c1787b50327bc7eb9a482a0ae6ee863c21937c1faea414e5ccb5c04',
         install_directory=install_directory,
         path=os.path.join(install_directory, 'bin', 'libiconv2.dll'))
 
@@ -170,6 +178,7 @@ def install_nano(install_directory):
     zip_install(
         url='http://www.nano-editor.org/dist/v2.2/NT/nano-2.2.6.zip',
         sha1='f5348208158157060de0a4df339401f36250fe5b',
+        sha512='83a4cdf56232c5c2f14f42275804d1af120a2346f03004ce6be384af68f73e39cbd0b9faf62f494253907d4f6606ee91b8c3c1abf6b949f27593bf41e0e3b00f',
         install_directory=install_directory)
 
 
@@ -178,6 +187,7 @@ def install_nanorc(install_directory):
     tar_install(
         url='http://www.nano-editor.org/dist/v2.2/nano-2.2.6.tar.gz',
         sha1='f2a628394f8dda1b9f28c7e7b89ccb9a6dbd302a',
+        sha512='e1ee5d63725055290a5117b73352a8557cc3105c737643e341a95ebbb0cecb06c46f86a2363de8455e9de3940e3f920c47af92e19ef9c53862de8a605da08d8d',
         install_directory=install_directory,
         strip_components=1)
     home = os.path.expanduser('~')
@@ -197,8 +207,9 @@ def install_nanorc(install_directory):
 def install_sqlite(install_directory):
     """Download and install the SQLite shell"""
     zip_install(
-        url='https://sqlite.org/2015/sqlite-shell-win32-x86-3090200.zip',
+        url='http://sqlite.org/2015/sqlite-shell-win32-x86-3090200.zip',
         sha1='25d78bbba37d2a0d9b9f86ed897e454ccc94d7b2',
+        sha512='e4eb51f674262cf65e0fe6e6d64c4ddb30301adcb295874fb1c5a6c522642f402b326ad8f46cd79d5b8db7bcac552d0cb79e114d93291c910b08eeee0a949848',
         install_directory=install_directory)
 
 
