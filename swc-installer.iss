@@ -12,13 +12,14 @@ AppPublisher=Software Carpentry
 AppPublisherURL=http://software-carpentry.org
 AppSupportURL=http://software-carpentry.org
 AppUpdatesURL=http://software-carpentry.org
-DefaultDirName={pf}\swc-installer
+DefaultDirName={userpf}\swc-installer
 DefaultGroupName=Software Carpentry Windows Installer
 DisableProgramGroupPage=yes
 OutputBaseFilename=SWCarpentryInstaller
 SetupIconFile=software-carpentry-logo.ico
 Compression=lzma
 SolidCompression=yes
+PrivilegesRequired=lowest
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
